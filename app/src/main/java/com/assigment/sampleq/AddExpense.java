@@ -1,5 +1,6 @@
 package com.assigment.sampleq;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,6 +149,11 @@ public class AddExpense extends AppCompatActivity {
             participantNames.add(name);
             contributions.put(name, contribution);
         }
+        Intent intent = new Intent(AddExpense.this, Results.class);
+        intent.putExtra("transactions", (Serializable) contributions);
+        startActivity(intent);
+
+
 
         // Here, you could save the expense data to a database or further process it
         Toast.makeText(this, "Expense saved with split!", Toast.LENGTH_LONG).show();
