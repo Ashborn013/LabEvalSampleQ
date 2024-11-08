@@ -150,6 +150,7 @@ public class AddExpense extends AppCompatActivity {
             contributions.put(name, contribution);
         }
         Intent intent = new Intent(AddExpense.this, Results.class);
+        intent.putExtra("totalAmount", totalAmount);
         intent.putExtra("transactions", (Serializable) contributions);
         startActivity(intent);
 
