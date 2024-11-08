@@ -20,7 +20,6 @@ public class Results extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
@@ -32,7 +31,7 @@ public class Results extends AppCompatActivity {
         if (intent != null) {
             totalAmount = intent.getDoubleExtra("totalAmount", 0.0);
             Serializable transactionData = intent.getSerializableExtra("transactions");
-            if (transactionData != null) {
+            if (transactionData instanceof Map) {
                 displayResults((Map<String, Double>) transactionData);
             }
         }
@@ -42,7 +41,6 @@ public class Results extends AppCompatActivity {
 
     private void displayResults(Map<String, Double> contributions) {
         StringBuilder resultText = new StringBuilder();
-
 
         // Calculate the net balance (who owes or is owed)
         Map<String, Double> balances = calculateBalances(contributions);
@@ -67,17 +65,27 @@ public class Results extends AppCompatActivity {
 
     private Map<String, Double> calculateBalances(Map<String, Double> contributions) {
         Map<String, Double> balances = new HashMap<>();
+        double totalContributions = 0.0;
+
+        // Calculate the total contributions
+        for (double contribution : contributions.values()) {
+            totalContributions += contribution;
+        }
+
         double individualShare = totalAmount / contributions.size();
+        double excessAmount = totalContributions - totalAmount;
 
         for (Map.Entry<String, Double> entry : contributions.entrySet()) {
-            balances.put(entry.getKey(), entry.getValue() - individualShare);
+            double contribution = entry.getValue();
+            double excessShare = (excessAmount > 0) ? (contribution / totalContributions) * excessAmount : 0;
+            balances.put(entry.getKey(), contribution - individualShare - excessShare);
         }
+
         return balances;
     }
 
     private List<String> minimizeTransactions(Map<String, Double> balances) {
         List<String> transactions = new ArrayList<>();
-
         List<Map.Entry<String, Double>> creditors = new ArrayList<>();
         List<Map.Entry<String, Double>> debtors = new ArrayList<>();
 
@@ -98,7 +106,6 @@ public class Results extends AppCompatActivity {
             double debtAmount = -debtor.getValue();
             double settlementAmount = Math.min(creditAmount, debtAmount);
 
-            // Format: "A owes B [amount]"
             transactions.add(debtor.getKey() + " owes " + creditor.getKey() + " $" + String.format("%.2f", settlementAmount));
 
             creditors.set(i, Map.entry(creditor.getKey(), creditAmount - settlementAmount));
