@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "469123712991",
+    "project_id": "sampleq-w2323",
+    "storage_bucket": "sampleq-w2323.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469123712991:android:ff57c7f8697a86b45fe66a",
+        "android_client_info": {
+          "package_name": "com.assigment.sampleq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTc46L1x_pzFo_MFb1F7HUpZ6ESebdzVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
